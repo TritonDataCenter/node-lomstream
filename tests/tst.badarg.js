@@ -76,13 +76,13 @@ var tl_bad = [
 	    str: 'bad limit (null)' },
 	{ arg: { fetch: tlFunc, limit: undefined, offset: true },
 	    str: 'bad limit (undefined)' },
-	{ arg: { fetch: tlFunc, limit: -3, limit: undefined, offset: true },
+	{ arg: { fetch: tlFunc, limit: -3, offset: true },
 	    str: 'bad limit (negative)' },
-	{ arg: { fetch: tlFunc, limit: 0, limit: undefined, offset: true },
+	{ arg: { fetch: tlFunc, limit: 0, offset: true },
 	    str: 'bad limit (zero)' },
-	{ arg: { fetch: tlFunc, limit: 1001, limit: undefined, offset: true },
+	{ arg: { fetch: tlFunc, limit: 2147483648, offset: true },
 	    str: 'bad limit (too large)' },
-	{ arg: { fetch: tlFunc, limit: 3.4, limit: undefined, offset: true },
+	{ arg: { fetch: tlFunc, limit: 3.4, offset: true },
 	    str: 'bad limit (frac)' },
 
 	{ arg: { fetch: tlFunc},
@@ -141,13 +141,14 @@ function main()
 	var i, err, s;
 	for (i = 0; i < tl_bad.length; i++) {
 		err = false;
+		s = null;
 		try {
 			s = new mod_lomstream.LOMStream(tl_bad[i].arg);
-			mod_assert.ok(!s);
 		} catch (e) {
 			err = true;
 		}
-		mod_assert.ok(err === true, tl_bad[i].str);
+		mod_assert.ok(err === true && s === null,
+		    'no assertion for: ' + tl_bad[i].str);
 	}
 }
 

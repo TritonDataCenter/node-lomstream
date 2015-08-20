@@ -29,6 +29,6 @@ all:
 .PHONY: test
 test:
 	@for f in tests/tst.*.js; do node $$f || return; done
-	@echo Tests passed succsesfully
+	@echo Tests passed successfully
 
 include ./Makefile.targ
