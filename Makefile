@@ -17,6 +17,7 @@ NPM		 = npm
 # Files
 #
 JS_FILES	:= $(shell find lib tests -name '*.js')
+TEST_FILES	:= $(shell find tests -name 'tst.*.js')
 JSON_FILES	 = package.json
 JSL_FILES_NODE   = $(JS_FILES)
 JSSTYLE_FILES	 = $(JS_FILES)
@@ -27,8 +28,11 @@ all:
 	$(NPM) install
 
 .PHONY: test
-test:
-	@for f in tests/tst.*.js; do node $$f || return; done
+test: $(TEST_FILES:%=%.test)
 	@echo Tests passed successfully
+
+%.test: %
+	@echo 'testing: $<'
+	@node $<
 
 include ./Makefile.targ
